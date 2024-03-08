@@ -1,0 +1,36 @@
+eureka:
+  client:
+    register-with-eureka: false
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: msvc-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: msvc-student
+          uri: lb://msvc-student
+          predicates:
+            - Path=/api/student/**
+          filters:
+            - AuthFilter
+
+        - id: msvc-course
+          uri: lb://msvc-course
+          predicates:
+            - Path=/api/course/**
+          filters:
+            - AuthFilter
+
+        - id: msvc-user
+          uri: lb://msvc-user
+          predicates:
+            - Path=/api/v1/security/**
+
+
